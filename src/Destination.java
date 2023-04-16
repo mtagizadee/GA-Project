@@ -1,10 +1,12 @@
 public class Destination {
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
+    private final int capacity;
 
-    public Destination(String name, int id) {
+    public Destination(int id, String name, int capacity) {
         this.id = id;
         this.name = name;
+        this.capacity = capacity;
     }
 
     public String getName() {
@@ -15,7 +17,11 @@ public class Destination {
         return this.id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getCapacity() {
+        return this.capacity;
+    }
+
+    public String toString() {
+        return this.id + ". " + this.name + " --> " + this.capacity;
     }
 }
