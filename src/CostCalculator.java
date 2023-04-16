@@ -16,7 +16,7 @@ public class CostCalculator {
         return Math.pow(isPreferableIndex - 1, 2);
     }
 
-    private int isPreferable(int destinationId) {
+    public int isPreferable(int destinationId) {
         ArrayList<Destination> preferences = student.getPreferences();
         for (int i = 0; i < preferences.size(); i++) {
             if (preferences.get(i).getId() == destinationId) return i;
