@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+
 public class Destination {
     private final String name;
     private final int id;
     private final int capacity;
+    private ArrayList<Student> students;
 
     public Destination(int id, String name, int capacity) {
         this.id = id;
@@ -23,5 +26,9 @@ public class Destination {
 
     public String toString() {
         return this.id + ". " + this.name + " --> " + this.capacity;
+    }
+
+    public void addStudent(Student student) {
+        this.students.add(student);
     }
 }

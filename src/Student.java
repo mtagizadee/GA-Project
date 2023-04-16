@@ -2,16 +2,16 @@ import java.util.ArrayList;
 
 
 public class Student {
-    private String name;
-    private String surname;
+    private String fullName;
     private int id;
+    private int destinationsNumber;
     private final ArrayList<Destination> preferences;
 
-    public Student(String name, String surname, int id) {
-        this.name = name;
-        this.surname = surname;
+    public Student(String fullName, int id, int destinationsNumber) {
+        this.fullName = fullName;
         this.id = id;
         this.preferences = new ArrayList<Destination>();
+        this.destinationsNumber = destinationsNumber;
     }
 
     public void addPreference(Destination destination) {
@@ -19,27 +19,19 @@ public class Student {
     }
 
     public String getFullName() {
-        return this.name + " " + this.surname;
+        return this.fullName;
     }
 
     public String toString() {
-        return this.getFullName();
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        return this.id + ". " + this.fullName + " --> " + this.destinationsNumber;
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public int getDestinationsNumber() {
+        return this.destinationsNumber;
     }
 
     public ArrayList<Destination> getPreferences() {
