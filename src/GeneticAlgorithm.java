@@ -19,7 +19,8 @@ public class GeneticAlgorithm {
     private void generatePopulation() {
         // think about it again. What if we just iterate over all students and for each student
         // iterate over all destinations and take each gene as destination in student.preferences (if yes then 1 else 0)
-        // in this case we will be able to build chromosomes and do crossover. But why then we need cost?
+        // in this case we will be able to build chromosomes and do crossover. But why then we need cost? 1 / cost defines the
+        // probability of a individual to be chosen during the selection.
 
         for (Student student : students) {
             for (Destination preference : student.getPreferences()) {
