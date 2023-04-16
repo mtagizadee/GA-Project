@@ -7,13 +7,11 @@ public class Main {
         dataContainer.shuffle();
 
         ArrayList<Student> students = dataContainer.getStudents();
+        ArrayList<Destination> destinations = dataContainer.getDestinations();
 
-        for (Student student : students) {
-            System.out.println(student);
-            System.out.println("# ----------- #");
-            for (Destination preference : student.getPreferences()) System.out.println(preference);
-            System.out.println("# ----------- #");
-        }
+        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(students, destinations);
+        geneticAlgorithm.optimize();
     }
 }
+
 

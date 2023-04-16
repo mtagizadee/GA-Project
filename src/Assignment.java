@@ -18,4 +18,12 @@ public class Assignment {
     public Destination getDestination() {
         return this.destination;
     }
+
+    public String toString() {
+        return "{ " + this.student + " // " + this.destination + " }";
+    }
+
+    public double getCost() {
+        return this.costCalculator.calculate(this.destination.getId());
+    }
 }
