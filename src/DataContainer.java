@@ -19,6 +19,7 @@ public class DataContainer {
     public void shuffle() {
         this.shuffleDestinations();
         this.shuffleStudents();
+        this.shufflePreferences();
     }
 
     public void shuffleDestinations() {
@@ -36,7 +37,15 @@ public class DataContainer {
         for (int i = 0; i < studentsNames.length; i++) {
             final int destinationsNumber = Helpers.rand(1, 10);
             this.students.add(new Student(studentsNames[i], i + 1, destinationsNumber));
+        }
+    }
 
+    public void shufflePreferences() { // TEMPORARY FUNCTION UNTIL GA IS NOT FINISHED
+        for (Student student : this.students) {
+            for (int i = 0; i < student.getDestinationsNumber(); i++) {
+                int randomPreferenceIndex = Helpers.rand(0, this.destinations.size() - 1);
+                student.addPreference(this.destinations.get(randomPreferenceIndex));
+            }
         }
     }
 }

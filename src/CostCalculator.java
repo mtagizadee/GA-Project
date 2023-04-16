@@ -4,8 +4,8 @@ public class CostCalculator {
     private ArrayList<Destination> destinations;
     private Student student;
 
-    public CostCalculator(DataContainer dataContainer, Student student) {
-        this.destinations = dataContainer.getDestinations();
+    public CostCalculator(ArrayList<Destination> destinations, Student student) {
+        this.destinations = destinations;
         this.student = student;
     }
 

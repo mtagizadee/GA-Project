@@ -7,10 +7,13 @@ public class Main {
         dataContainer.shuffle();
 
         ArrayList<Student> students = dataContainer.getStudents();
-        ArrayList<Destination> destinations = dataContainer.getDestinations();
 
-        for (Student student : students) System.out.println(student);
-        for (Destination destination : destinations) System.out.println(destination);
+        for (Student student : students) {
+            System.out.println(student);
+            System.out.println("# ----------- #");
+            for (Destination preference : student.getPreferences()) System.out.println(preference);
+            System.out.println("# ----------- #");
+        }
     }
 }
 
