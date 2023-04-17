@@ -91,7 +91,8 @@ public class GeneticAlgorithm {
 
     private boolean isConverged() {
         for (int i = 0; i < this.population.size(); i++) {
-            if (!this.population.get(i).equals(this.previousPopulation.get(i))) return false;
+            if (!this.population.get(i).toChromosome().equals(this.previousPopulation.get(i).toChromosome()))
+                return false;
         }
 
         return true;
@@ -116,7 +117,7 @@ public class GeneticAlgorithm {
     }
 
     private boolean toFlip(int flipChance) {
-        return flipChance == 2 || flipChance == 4 || flipChance == 6 || flipChance == 5;
+        return  flipChance == 6 || flipChance == 5;
     }
 
     public void optimize() {
@@ -126,14 +127,20 @@ public class GeneticAlgorithm {
         System.out.println("Initial population");
         for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
 
-        while (!this.isConverged()) {
+        int iterations = 0;
+        do {
             ArrayList<ArrayList<Integer>> selections = this.selection();
+
             this.crossover(selections);
             this.mutation();
             this.computeFitness();
-        }
+
+            iterations++;
+        } while (!this.isConverged() || iterations == 1);
 
         System.out.println("Final population");
         for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
+
+        System.out.println("Iterations: " + iterations);
     }
 }
