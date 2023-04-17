@@ -124,9 +124,6 @@ public class GeneticAlgorithm {
         this.generatePopulation();
         this.computeFitness();
 
-        System.out.println("Initial population");
-        for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
-
         int iterations = 0;
         do {
             ArrayList<ArrayList<Integer>> selections = this.selection();
@@ -137,10 +134,5 @@ public class GeneticAlgorithm {
 
             iterations++;
         } while (!this.isConverged() || iterations == 1);
-
-        System.out.println("Final population");
-        for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
-
-        System.out.println("Iterations: " + iterations);
     }
 }
