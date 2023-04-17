@@ -5,7 +5,7 @@ public class Student {
     private String fullName;
     private int id;
     private int destinationsNumber;
-    private final ArrayList<Destination> preferences;
+    private ArrayList<Destination> preferences;
 
     public Student(String fullName, int id, int destinationsNumber) {
         this.fullName = fullName;
@@ -28,6 +28,10 @@ public class Student {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setPreferences(ArrayList<Destination> preferences) {
+        this.preferences = preferences;
     }
 
     public int getDestinationsNumber() {

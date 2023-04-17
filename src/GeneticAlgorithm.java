@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class GeneticAlgorithm {
 
@@ -33,18 +35,24 @@ public class GeneticAlgorithm {
         }
     }
 
-    private ArrayList<Integer> selection() {
+    private ArrayList<ArrayList<Integer>> selection() {
         ArrayList<Double> probabilities = new ArrayList<Double>();
-        ArrayList<Integer> selected = new ArrayList<Integer>();
+        ArrayList<ArrayList<Integer>> selections = new ArrayList<ArrayList<Integer>>();
         for (Assignment assignment : population) probabilities.add(1 / assignment.getTotalCost());
 
-        for (int i = 0; i < 2; i++) {
-            int maxIndex = this.findMaxProbability(probabilities);
-            selected.add(maxIndex);
-            probabilities.remove(maxIndex);
+        for (; probabilities.size() != 0; ) {
+            ArrayList<Integer> selection = new ArrayList<Integer>();
+
+            for (int i = 0; i < 2; i++) {
+                int maxIndex = this.findMaxProbability(probabilities);
+                selection.add(maxIndex);
+                probabilities.remove(maxIndex);
+            }
+
+            selections.add(selection);
         }
 
-        return selected;
+        return selections;
     }
 
     private int findMaxProbability(ArrayList<Double> probabilities) {
@@ -60,16 +68,21 @@ public class GeneticAlgorithm {
         return maxIndex;
     }
 
-    private String[] crossover(ArrayList<Integer> selected) {
-        String father = this.population.get(selected.get(0)).toChromosome();
-        String mother = this.population.get(selected.get(1)).toChromosome();
+    private void crossover(ArrayList<ArrayList<Integer>> selections) {
+        for (ArrayList<Integer> selection : selections) {
+            int fatherIdx = selection.get(0), motherIdx = selection.get(1);
 
-        int index  = Helpers.rand(0, father.length() - 1);
+            String father = this.population.get(fatherIdx).toChromosome();
+            String mother = this.population.get(motherIdx).toChromosome();
 
-        String child1 = father.substring(0, index) + mother.substring(index);
-        String child2 = mother.substring(0, index) + father.substring(index);
+            int index = Helpers.rand(0, father.length() - 1);
 
-        return new String[]{child1, child2};
+            String child1 = father.substring(0, index) + mother.substring(index);
+            String child2 = mother.substring(0, index) + father.substring(index);
+
+            this.population.get(fatherIdx).applyChromosome(child1);
+            this.population.get(motherIdx).applyChromosome(child2);
+        }
     }
 
     private boolean isConverged() {
@@ -77,20 +90,44 @@ public class GeneticAlgorithm {
     }
 
     private void mutation() {
+        for (Assignment assignment : this.population) {
+            String[] genes =  assignment.toChromosome().split("");
 
+            for (int i = 0; i < genes.length; i++) {
+                int flipChance = Helpers.rand(1, 10);
+
+                if (toFlip(flipChance)) {
+                    String gene = genes[i];
+                    genes[i] = Objects.equals(gene, "1") ? "0" : "1";
+                }
+            }
+
+            String newChromosome = Arrays.toString(genes);
+            assignment.applyChromosome(newChromosome);
+        }
+    }
+
+    private boolean toFlip(int flipChance) {
+        return flipChance == 2 || flipChance == 4 || flipChance == 6 || flipChance == 5;
     }
 
     public void optimize() {
         this.generatePopulation();
         this.computeFitness();
 
-        while (!isConverged()) {
-            ArrayList<Integer> selected = this.selection();
-            String[] children = this.crossover(selected);
+        System.out.println("Initial population");
+        for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
+        int count = 0;
+        while (count++ != 20) {
+            ArrayList<ArrayList<Integer>> selections = this.selection();
+            this.crossover(selections);
             // find a way to convert chromosome to assignment and add it to the population
 
             this.mutation();
             this.computeFitness();
         }
+
+        System.out.println("Final population");
+        for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
     }
 }

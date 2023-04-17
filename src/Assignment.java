@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Assignment {
     private Student student;
@@ -37,6 +38,15 @@ public class Assignment {
         }
 
         return result.toString();
+    }
+
+    public void applyChromosome(String chromosome) {
+        ArrayList<Destination> newPreferences = new ArrayList<Destination>();
+        for (int i = 0; i < this.destinations.size(); i++) {
+            if (Objects.equals(chromosome.split("")[i], "1"))
+                newPreferences.add(this.destinations.get(i));
+        }
+        this.student.setPreferences(newPreferences);
     }
 
     public double getTotalCost() {
