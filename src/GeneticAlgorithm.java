@@ -7,6 +7,7 @@ public class GeneticAlgorithm {
     private ArrayList<Student> students;
     private ArrayList<Destination> destinations;
     private ArrayList<Assignment> population;
+    private ArrayList<Assignment> previousPopulation;
 
     public GeneticAlgorithm(ArrayList<Student> students, ArrayList<Destination> destinations) {
         this.students = students;
@@ -16,16 +17,13 @@ public class GeneticAlgorithm {
 
     public void init() {
         this.population = new ArrayList<Assignment>();
+        this.previousPopulation = new ArrayList<Assignment>();
     }
 
     private void generatePopulation() {
-        // think about it again. What if we just iterate over all students and for each student
-        // iterate over all destinations and take each gene as destination in student.preferences (if yes then 1 else 0)
-        // in this case we will be able to build chromosomes and do crossover. But why then we need cost? 1 / cost defines the
-        // probability of a individual to be chosen during the selection.
-
         for (Student student : this.students) {
             this.population.add(new Assignment(student, this.destinations));
+            this.previousPopulation.add(new Assignment(student, this.destinations));
         }
     }
 
@@ -40,7 +38,7 @@ public class GeneticAlgorithm {
         ArrayList<ArrayList<Integer>> selections = new ArrayList<ArrayList<Integer>>();
         for (Assignment assignment : population) probabilities.add(1 / assignment.getTotalCost());
 
-        for (; probabilities.size() != 0; ) {
+        while (probabilities.size() != 0) {
             ArrayList<Integer> selection = new ArrayList<Integer>();
 
             for (int i = 0; i < 2; i++) {
@@ -68,7 +66,13 @@ public class GeneticAlgorithm {
         return maxIndex;
     }
 
+    private void savePreviousPopulation() {
+        this.previousPopulation.clear();
+        this.previousPopulation.addAll(this.population);
+    }
+
     private void crossover(ArrayList<ArrayList<Integer>> selections) {
+        this.savePreviousPopulation();
         for (ArrayList<Integer> selection : selections) {
             int fatherIdx = selection.get(0), motherIdx = selection.get(1);
 
@@ -86,6 +90,10 @@ public class GeneticAlgorithm {
     }
 
     private boolean isConverged() {
+        for (int i = 0; i < this.population.size(); i++) {
+            if (!this.population.get(i).equals(this.previousPopulation.get(i))) return false;
+        }
+
         return true;
     }
 
@@ -117,12 +125,10 @@ public class GeneticAlgorithm {
 
         System.out.println("Initial population");
         for (Assignment assignment : this.population) System.out.println(assignment.toChromosome());
-        int count = 0;
-        while (count++ != 20) {
+
+        while (!this.isConverged()) {
             ArrayList<ArrayList<Integer>> selections = this.selection();
             this.crossover(selections);
-            // find a way to convert chromosome to assignment and add it to the population
-
             this.mutation();
             this.computeFitness();
         }
